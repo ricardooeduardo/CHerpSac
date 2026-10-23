@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel SAC</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <!-- Login -->
+  <section id="login" class="login hidden">
+    <form id="loginForm" class="login-card">
+      <div class="brand-mark">SAC</div>
+      <h1>Painel administrativo</h1>
+      <p class="muted">Entre para gerenciar a base de conhecimento e a conexão com a IA.</p>
+      <label>Senha<input type="password" id="loginPassword" autocomplete="current-password" required autofocus></label>
+      <div id="loginError" class="form-error"></div>
+      <button class="btn primary block" type="submit">Entrar</button>
+    </form>
+  </section>
+
+  <!-- Painel -->
+  <div id="shell" class="shell hidden">
+    <aside class="sidebar">
+      <div class="side-brand"><div class="brand-mark sm">SAC</div><span>Painel SAC</span></div>
+      <nav id="nav">
+        <a data-view="overview"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zm10 8h8V11h-8zM3 21h8v-6H3zm10-18v6h8V3z"/></svg><span>Visão geral</span></a>
+        <a data-view="documents"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9z"/></svg><span>Documentos</span></a>
+        <a data-view="ai"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2v1h3a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h3V4a2 2 0 0 1 2-2zM9 11a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></svg><span>Conexão com IA</span></a>
+        <a data-view="branding"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18c.8 0 1.5-.7 1.5-1.5 0-.4-.1-.7-.4-1-.2-.3-.4-.6-.4-1 0-.8.7-1.5 1.5-1.5H16a5 5 0 0 0 5-5c0-4.4-4-8-9-8zm-5.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg><span>Personalização</span></a>
+        <a data-view="conversations"><svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg><span>Conversas</span></a>
+        <a data-view="security"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5z"/></svg><span>Segurança</span></a>
+      </nav>
+      <div class="side-foot">
+        <a href="/" target="_blank" class="btn ghost block">Abrir chat ↗</a>
+        <button id="logout" class="btn ghost block">Sair</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <!-- Visão geral -->
+      <section data-view="overview" class="view">
+        <header class="view-head"><div><h2>Visão geral</h2><p class="muted">Situação do atendimento automatizado.</p></div></header>
+        <div id="alerts"></div>
+        <div class="stats" id="stats"></div>
+        <div class="card">
+          <h3>Como funciona</h3>
+          <ol class="steps">
+            <li><b>Alimente a base</b> em <a data-goto="documents">Documentos</a>: envie PDFs, Word, planilhas CSV ou escreva FAQs.</li>
+            <li><b>Conecte uma IA</b> em <a data-goto="ai">Conexão com IA</a> para interpretar as perguntas e redigir respostas.</li>
+            <li><b>Personalize</b> nome, cores e tom de voz em <a data-goto="branding">Personalização</a>.</li>
+            <li><b>Acompanhe</b> as <a data-goto="conversations">Conversas</a> e use as avaliações 👍/👎 para melhorar a base.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Documentos -->
+      <section data-view="documents" class="view">
+        <header class="view-head">
+          <div><h2>Documentos</h2><p class="muted">Tudo o que a IA sabe sobre a empresa vem daqui.</p></div>
+          <button class="btn primary" id="newTextDoc">+ Escrever texto</button>
+        </header>
+
+        <label class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt,.md,.csv,.json,.html,.htm,.xml,.tsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          <strong>Arraste arquivos aqui ou clique para escolher</strong>
+          <span class="muted">PDF, Word (.docx), TXT, Markdown, CSV, JSON ou HTML</span>
+        </label>
+        <div id="uploads" class="uploads"></div>
+
+        <div class="card no-pad">
+          <div class="table-head">
+            <h3>Base de conhecimento <span class="badge" id="docCount">0</span></h3>
+            <input type="search" id="docFilter" placeholder="Filtrar documentos…">
+          </div>
+          <div id="docList"></div>
+        </div>
+
+        <div class="card">
+          <h3>Testar busca</h3>
+          <p class="muted">Digite uma pergunta como um cliente faria e veja quais trechos da base são encontrados.</p>
+          <form id="searchTest" class="inline-form">
+            <input type="text" id="searchQuery" placeholder="Ex.: qual o prazo para devolução?">
+            <button class="btn" type="submit">Buscar</button>
+          </form>
+          <div id="searchResults"></div>
+        </div>
+      </section>
+
+      <!-- Conexão com IA -->
+      <section data-view="ai" class="view">
+        <header class="view-head"><div><h2>Conexão com IA</h2><p class="muted">A IA interpreta a pergunta do cliente e responde usando a base de conhecimento.</p></div><span id="aiStatus" class="pill"></span></header>
+
+        <div class="card">
+          <h3>1. Escolha o provedor</h3>
+          <div class="providers" id="providers"></div>
+        </div>
+
+        <form class="card" id="aiForm">
+          <h3>2. Credenciais e modelo</h3>
+          <div class="grid2">
+            <label class="span2" id="keyField">Chave de API
+              <div class="input-group">
+                <input type="password" id="apiKey" autocomplete="off" spellcheck="false">
+                <button type="button" class="btn" id="toggleKey">Mostrar</button>
+              </div>
+              <small class="muted" id="keyHelp"></small>
+            </label>
+            <label class="span2" id="baseUrlField">URL base da API
+              <input type="url" id="baseUrl" spellcheck="false" placeholder="https://…/v1">
+              <small class="muted">Endereço compatível com a API da OpenAI (rota <code>/chat/completions</code>).</small>
+            </label>
+            <label class="span2" id="modelSelectField">Modelo
+              <div class="models" id="modelOptions"></div>
+            </label>
+            <label id="modelTextField">Modelo
+              <input type="text" id="modelText" spellcheck="false">
+            </label>
+            <label id="effortField">Profundidade de raciocínio
+              <select id="effort">
+                <option value="low">Baixa — respostas mais rápidas (recomendado para SAC)</option>
+                <option value="medium">Média</option>
+                <option value="high">Alta — perguntas complexas, mais lento</option>
+              </select>
+            </label>
+          </div>
+
+          <details class="advanced">
+            <summary>Opções avançadas</summary>
+            <div class="grid2">
+              <label>Como a base é enviada para a IA
+                <select id="contextMode">
+                  <option value="auto">Automático (recomendado)</option>
+                  <option value="full">Base inteira em toda pergunta</option>
+                  <option value="search">Só os trechos mais relevantes</option>
+                </select>
+                <small class="muted">Automático: envia a base inteira enquanto ela for pequena (melhor qualidade, com cache) e passa a buscar trechos quando crescer.</small>
+              </label>
+              <label>Tamanho máximo da resposta (tokens)
+                <input type="number" id="maxTokens" min="256" max="128000" step="256">
+              </label>
+            </div>
+          </details>
+
+          <div id="testResult"></div>
+          <div class="form-actions">
+            <button type="button" class="btn" id="testAi">Testar conexão</button>
+            <button type="submit" class="btn primary">Salvar conexão</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Personalização -->
+      <section data-view="branding" class="view">
+        <header class="view-head"><div><h2>Personalização</h2><p class="muted">Como o chat aparece e se comporta para o cliente.</p></div></header>
+        <form id="brandingForm" class="card">
+          <div class="grid2">
+            <label>Nome da empresa<input name="companyName" required></label>
+            <label>Nome do assistente<input name="assistantName" required></label>
+            <label>Cor principal
+              <div class="input-group"><input type="color" name="primaryColor" class="color"><input type="text" id="colorText" spellcheck="false"></div>
+            </label>
+            <label>Contato humano (telefone, e-mail, WhatsApp)<input name="contact" placeholder="Ex.: WhatsApp (11) 99999-0000, seg–sex 8h–18h"></label>
+            <label class="span2">Mensagem de boas-vindas<textarea name="welcome" rows="2"></textarea></label>
+            <label class="span2">Sugestões de perguntas (uma por linha)<textarea name="suggestions" rows="3"></textarea></label>
+            <label class="span2">Instruções extras para a IA
+              <textarea name="instructions" rows="5" placeholder="Ex.: Trate o cliente por 'você'. Nunca prometa reembolso sem protocolo. Sempre ofereça o link de rastreio quando falarem de entrega."></textarea>
+              <small class="muted">Tom de voz, regras do negócio, o que nunca dizer, quando encaminhar para humano.</small>
+            </label>
+            <label class="span2">Mensagem quando não souber responder<textarea name="fallbackMessage" rows="2"></textarea></label>
+            <label class="check span2"><input type="checkbox" name="showSources"> Mostrar ao cliente de qual documento veio a resposta</label>
+          </div>
+          <div class="form-actions">
+            <a class="btn" href="/" target="_blank">Ver chat ↗</a>
+            <button class="btn primary" type="submit">Salvar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Conversas -->
+      <section data-view="conversations" class="view">
+        <header class="view-head">
+          <div><h2>Conversas</h2><p class="muted">Histórico dos atendimentos feitos pelo chat.</p></div>
+          <select id="convFilter">
+            <option value="all">Todas</option>
+            <option value="down">Com avaliação negativa</option>
+            <option value="problems">Sem resposta da IA</option>
+          </select>
+        </header>
+        <div class="conv-layout">
+          <div class="card no-pad conv-list" id="convList"></div>
+          <div class="card conv-detail" id="convDetail"><p class="muted center">Selecione uma conversa.</p></div>
+        </div>
+      </section>
+
+      <!-- Segurança -->
+      <section data-view="security" class="view">
+        <header class="view-head"><div><h2>Segurança</h2><p class="muted">Acesso ao painel administrativo.</p></div></header>
+        <form id="passwordForm" class="card narrow">
+          <h3>Trocar senha</h3>
+          <label>Senha atual<input type="password" name="current" autocomplete="current-password" required></label>
+          <label>Nova senha<input type="password" name="next" autocomplete="new-password" minlength="6" required></label>
+          <label>Confirmar nova senha<input type="password" name="confirm" autocomplete="new-password" minlength="6" required></label>
+          <div class="form-actions"><button class="btn primary" type="submit">Salvar nova senha</button></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de documento -->
+  <dialog id="docModal">
+    <form method="dialog" id="docForm" class="modal">
+      <header><h3 id="docModalTitle">Documento</h3><button class="x" value="cancel" formnovalidate aria-label="Fechar">×</button></header>
+      <label>Título<input id="docTitle" required placeholder="Ex.: Política de trocas e devoluções"></label>
+      <label>Conteúdo<textarea id="docText" rows="16" required placeholder="Cole ou escreva aqui o conteúdo. Ex.:&#10;&#10;Pergunta: Qual o prazo de entrega?&#10;Resposta: De 3 a 7 dias úteis para capitais…"></textarea></label>
+      <div class="modal-foot">
+        <span class="muted" id="docMeta"></span>
+        <label class="check" id="docEnabledWrap"><input type="checkbox" id="docEnabled"> Ativo</label>
+        <button class="btn" value="cancel" formnovalidate>Cancelar</button>
+        <button class="btn primary" id="docSave" value="save">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toasts" class="toasts"></div>
+
+  <script src="/markdown.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>
